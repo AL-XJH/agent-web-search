@@ -6,11 +6,13 @@ from .deepseek import DeepSeekProvider
 from .exa import ExaProvider
 from .gemini import GeminiProvider
 from .grok import GrokProvider
+from .keenable import KeenableProvider
 from .messages import MessagesProvider
 from .parallel import ParallelProvider
 from .perplexity import PerplexityProvider
 from .responses import ResponsesProvider
 from .tavily import TavilyProvider
+from .tinyfish import TinyFishProvider
 from .you import YouProvider
 from .zhipu_chat_search import ZhipuChatSearchProvider
 from .zhipu_web_search import ZhipuWebSearchProvider
@@ -29,6 +31,8 @@ __all__ = [
     "PerplexityProvider",
     "ResponsesProvider",
     "TavilyProvider",
+    "TinyFishProvider",
+    "KeenableProvider",
     "YouProvider",
     "ZhipuChatSearchProvider",
     "ZhipuWebSearchProvider",
