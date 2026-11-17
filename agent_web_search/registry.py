@@ -19,7 +19,6 @@ from .providers import (
     TavilyProvider,
     TinyFishProvider,
     YouProvider,
-    ZhipuChatSearchProvider,
 )
 from .providers.base import Provider
 
@@ -98,11 +97,6 @@ PROVIDER_SPECS = {
         YouProvider,
         "You.com Search API",
         "YDC_API_KEY",
-    ),
-    "zhipu_chat_search": ProviderSpec(
-        ZhipuChatSearchProvider,
-        "Zhipu Chat Completions Web Search",
-        "ZHIPU_CHAT_SEARCH_API_KEY",
     ),
 }
 

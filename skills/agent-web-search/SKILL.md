@@ -15,7 +15,7 @@ engine, providers, inputs, response shape, and all-provider failure payload.
 
 - **Always pass complete natural-language questions**: Formulate your query as a full sentence with explicit context, goals, and constraints.
 - **Do NOT use fragmented keyword queries**: Avoid short Google/Baidu-style keywords (e.g. do **NOT** search `"NVIDIA earnings Q3"` or `"DeepSeek V3 benchmark"`).
-- **Why this matters**: Upstream model providers (`ark`, `deepseek`, `gemini`, `grok`, `zhipu_chat_search`) and semantic search engines (`exa`, `parallel`) use neural models to read, reason, and ground citations. Feeding them fragmented keywords deprives the model of semantic context and severely degrades grounding and synthesis quality.
+- **Why this matters**: Upstream model providers (`ark`, `deepseek`, `gemini`, `grok`) and semantic search engines (`exa`, `parallel`) use neural models to read, reason, and ground citations. Feeding them fragmented keywords deprives the model of semantic context and severely degrades grounding and synthesis quality.
 
 | Query Style | Example | Result Quality |
 | :--- | :--- | :--- |
@@ -49,8 +49,7 @@ registered at startup. The current Provider IDs are:
   `messages` (`AGENT_WEB_SEARCH_MESSAGES_API_KEY` plus
   `AGENT_WEB_SEARCH_MESSAGES_BASE_URL`),
   `responses` (`AGENT_WEB_SEARCH_RESPONSES_API_KEY` plus
-  `AGENT_WEB_SEARCH_RESPONSES_BASE_URL`),
-  and `zhipu_chat_search` (`ZHIPU_CHAT_SEARCH_API_KEY`).
+  `AGENT_WEB_SEARCH_RESPONSES_BASE_URL`).
 - **Agent search:** `brave` (`BRAVE_SEARCH_API_KEY`), `exa` (`EXA_API_KEY`
   or its configured free MCP endpoint), `parallel` (`PARALLEL_API_KEY` or
   its configured free MCP endpoint), `tavily` (`TAVILY_API_KEY`),
@@ -58,19 +57,7 @@ registered at startup. The current Provider IDs are:
   `tinyfish` (`TINYFISH_API_KEY` or `MCP_TINYFISH_API_KEY`).
 
 Provider-specific model and endpoint overrides, HTTP settings, and the complete
-placeholder environment template are in `.env.example`. The Zhipu surface is
-`zhipu_chat_search`, which asks a GLM model to search the web and synthesize an
-answer:
-
-```bash
-AGENT_WEB_SEARCH_PROVIDERS=zhipu_chat_search
-ZHIPU_CHAT_SEARCH_API_KEY=<server-side-key>
-agent-web-search "智谱最近发布了哪些新的模型能力和开发工具？" --provider zhipu_chat_search
-```
-
-It accepts `ZHIPU_CHAT_SEARCH_API_KEY` and optionally
-`AGENT_WEB_SEARCH_ZHIPU_CHAT_MODELS`. Never use a shared `ZHIPU_API_KEY`
-fallback or pass the credential as a CLI/MCP argument.
+placeholder environment template are in `.env.example`.
 
 ## Run a search
 

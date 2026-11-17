@@ -126,8 +126,8 @@ agent-web-search-mcp --help
 传统搜索聚合（Google/Bing/百度封装、抓取 SERP）把关键词查询发给传统搜索引擎再合并结果页。Agent Web Search 聚合的是**为 Agent 构建的搜索能力**：一次工具调用返回结构化、可直接引用的证据——或通过模型原生 grounding 提供商返回带明确引用的综合回答。[实测基准](https://github.com/JerryLiu369/agent-web-search/blob/main/docs/benchmark-2026-09-06.md)显示了实际差异：在一个要求官方来源的中文自然语言查询上，传统 SERP 后端前 5 条结果没有任何政府域名，而 grounding 提供商返回了海关总署数据并附可用引用链接。
 
 - **从设计上就是 Agent-native。** 主要输入是完整的自然语言问题，而不是把关键词简单分发给 Google、Bing 或百度。
-- **模型原生搜索后端。** ARK、Gemini、Grok、DeepSeek、Messages、智谱 Chat Search 和 Codex Alpha 可以把联网检索、模型综合回答与明确引用结合起来。
-- **Agent 搜索提供商。** Exa、Parallel、Brave、Perplexity、Tavily、You.com 和智谱 Web Search 提供面向 Agent 的搜索 API，输出结构化、适合引用或适合放入上下文的证据。
+- **模型原生搜索后端。** ARK、Gemini、Grok、DeepSeek、Messages 和 Codex Alpha 可以把联网检索、模型综合回答与明确引用结合起来。
+- **Agent 搜索提供商。** Exa、Parallel、Brave、Tavily、You.com、Keenable、TinyFish 提供面向 Agent 的搜索 API，输出结构化、适合引用或适合放入上下文的证据。
 - **统一的 Provider-neutral 契约。** 所有后端都通过同一个 MCP 工具、CLI、Python API 和统一的 `results` 返回；模型后端还可以返回 `answer`。
 - **Provider 相互独立。** 选中的 Provider 会并发执行，一个 Provider 失败不会丢弃其他 Provider 的成功结果。
 - **保留一个简单的 DDGS 后端。** DDGS 是唯一的传统搜索后端，不需要 API Key；Exa 和 Parallel 默认也可以免 Key 使用。
@@ -162,7 +162,6 @@ agent-web-search-mcp --help
 | **Grok** | [xAI](https://docs.x.ai/docs/guides/tools/overview) | xAI 网页搜索和 X Search | `XAI_API_KEY` | 否 |
 | **Responses** | 兼容 Responses API 的网关 | 通用 OpenAI Responses API 网页搜索 | `AGENT_WEB_SEARCH_RESPONSES_API_KEY` | 否 |
 | **Messages** | 兼容 Messages API 的网关 | 通用 Anthropic Messages API 网页搜索 | `AGENT_WEB_SEARCH_MESSAGES_API_KEY` | 否 |
-| **智谱 Chat Search** | [智谱 AI](https://open.bigmodel.cn/) | GLM Chat Completions 原生联网搜索 | `ZHIPU_CHAT_SEARCH_API_KEY` | 否 |
 
 ### Agent 搜索提供商
 
@@ -174,10 +173,8 @@ agent-web-search-mcp --help
 | **Exa** | [Exa](https://exa.ai) | 语义 Search API 或免费 MCP 后端 | **无 Key 免费** · 可选 `EXA_API_KEY` | 是 |
 | **Parallel** | [Parallel](https://parallel.ai) | 面向上下文的搜索 API 或免费 MCP | **无 Key 免费** · 可选 `PARALLEL_API_KEY` | 是 |
 | **Brave** | [Brave Search](https://brave.com/search/api/) | 结构化 Web Search API | `BRAVE_SEARCH_API_KEY` | 否 |
-| **Perplexity** | [Perplexity API](https://www.perplexity.ai/api-platform) | 原生结构化 Search API | `PERPLEXITY_API_KEY` | 否 |
 | **Tavily** | [Tavily](https://tavily.com) | 面向 Agent 的 Search API | `TAVILY_API_KEY` | 否 |
 | **You.com** | [You.com API](https://you.com/platform/api) | 统一网页与新闻 Search API | `YDC_API_KEY` | 否 |
-| **智谱 Web Search** | [智谱 AI](https://open.bigmodel.cn/) | 独立的结构化 Web Search API | `ZHIPU_WEB_SEARCH_API_KEY` | 否 |
 
 Provider 架构是开放的：添加新的搜索后端时，不需要修改 MCP、Hermes、CLI 或 Python 接口。
 
@@ -589,17 +586,7 @@ DeepSeek 使用官方 Anthropic 兼容 Messages API 和原生
 
 配置 Key 后，将 `deepseek` 加入 `AGENT_WEB_SEARCH_PROVIDERS`。Provider 会在配置的基础地址后追加 `/v1/messages`。配置多个模型时，连续请求会轮询选择模型。
 
-#### 10. Perplexity
-
-该 Provider 使用 Perplexity 原生的结构化 Search API，返回搜索结果行，而不是由 Sonar 生成的文本回答。该 Provider 不包含 OpenRouter 兼容逻辑。
-
-| 变量 | 必填 | 用途 |
-| --- | :---: | --- |
-| `PERPLEXITY_API_KEY` | 是 | Perplexity Search API 凭据 |
-
-配置 Key 后，将 `perplexity` 加入 `AGENT_WEB_SEARCH_PROVIDERS`。
-
-#### 11. Tavily
+#### 10. Tavily
 
 | 变量 | 必填 | 用途 |
 | --- | :---: | --- |
@@ -607,7 +594,7 @@ DeepSeek 使用官方 Anthropic 兼容 Messages API 和原生
 
 配置 Key 后，将 `tavily` 加入 `AGENT_WEB_SEARCH_PROVIDERS`。
 
-#### 12. You.com
+#### 11. You.com
 
 You.com 返回统一的网页和新闻结果。Agent Web Search 会合并两部分、按 URL 去重，并将 `max_results` 应用于合并后的结果列表。
 
@@ -617,35 +604,7 @@ You.com 返回统一的网页和新闻结果。Agent Web Search 会合并两部�
 
 配置 Key 后，将 `you` 加入 `AGENT_WEB_SEARCH_PROVIDERS`。
 
-#### 13. 智谱 Web Search
-
-智谱 Web Search 使用中国区独立的 Web Search API，返回结构化搜索结果。它与智谱
-Chat Search 是两个独立 Provider，二者之间不会互相 fallback。
-
-| 变量 | 必填 | 用途 |
-| --- | :---: | --- |
-| `ZHIPU_WEB_SEARCH_API_KEY` | 是 | 智谱 Web Search API 凭据 |
-| `AGENT_WEB_SEARCH_ZHIPU_WEB_SEARCH_BASE_URL` | 否 | 中国区 API 基础地址，默认 `https://open.bigmodel.cn` |
-
-配置 Key 后，将 `zhipu_web_search` 加入 `AGENT_WEB_SEARCH_PROVIDERS`。Provider 会在
-基础地址后追加 `/api/paas/v4/web_search`。
-
-#### 14. 智谱 Chat Search
-
-智谱 Chat Search 使用中国区 GLM Chat Completions API 的原生联网搜索能力。它返回
-模型回答和明确的顶层搜索结果；回答正文中提到的 URL 不会被猜测成引用。它与智谱
-Web Search 是两个独立 Provider，不存在 API/Chat fallback。
-
-| 变量 | 必填 | 用途 |
-| --- | :---: | --- |
-| `ZHIPU_CHAT_SEARCH_API_KEY` | 是 | 智谱 Chat Search API 凭据 |
-| `AGENT_WEB_SEARCH_ZHIPU_CHAT_BASE_URL` | 否 | 中国区 API 基础地址，默认 `https://open.bigmodel.cn` |
-| `AGENT_WEB_SEARCH_ZHIPU_CHAT_MODELS` | 否 | 用逗号/换行分隔的 GLM 模型 ID，默认 `glm-5.3-flash` |
-
-配置 Key 后，将 `zhipu_chat_search` 加入 `AGENT_WEB_SEARCH_PROVIDERS`。Provider 会在
-基础地址后追加 `/api/paas/v4/chat/completions`。配置多个模型时，连续请求会轮询选择模型。
-
-#### 15. Responses
+#### 12. Responses
 
 Responses 是通用 OpenAI Responses API 客户端，适用于在 `POST {base_url}/responses`
 暴露服务端网页搜索工具的网关。它遍历 `output` 数组（不假设 `output[0]` 即为结果），
@@ -664,7 +623,7 @@ Responses 是通用 OpenAI Responses API 客户端，适用于在 `POST {base_ur
 
 配置 Key 后，将 `responses` 加入 `AGENT_WEB_SEARCH_PROVIDERS`。配置多个模型时，连续请求会轮询选择模型。
 
-#### 16. Messages
+#### 13. Messages
 
 Messages 是通用 Anthropic Messages API 客户端，适用于在 `POST {base_url}/v1/messages`
 暴露服务端网页搜索工具的网关。它遍历 `content` 数组（不假设单个结果块即为结果），
@@ -700,11 +659,8 @@ Messages 是通用 Anthropic Messages API 客户端，适用于在 `POST {base_u
 | Codex Alpha | 本地结果截断 | 忽略 |
 | DeepSeek | 本地搜索结果截断 | Prompt 约束 |
 | Messages | 本地去重并截断 | Prompt 约束 |
-| Perplexity | 原生 `max_results` | 原生时间范围过滤 |
 | Tavily | 原生 `max_results` | 原生 `time_range` |
 | You.com | 原生 `count`，合并后截断 | 原生 `freshness` |
-| 智谱 Web Search | 原生 `count`，本地去重并截断 | 原生时间范围过滤 |
-| 智谱 Chat Search | 原生 `count`，本地去重并截断 | 原生时间范围过滤 |
 | Responses | 本地去重并截断 | Prompt 约束 |
 
 基于 Prompt 的控制属于尽力而为，不是严格保证。
@@ -754,9 +710,9 @@ DSH 也可以不装原生插件，而是用自带的 MCP 客户端连接本项�
 
 Agent Web Search 是面向 AI Agent 的开源联网搜索层。它通过 MCP 服务器（stdio
 或 Streamable HTTP）、CLI 和 Python API 暴露同一个 `web_search` 工具。工具背后
-并发调用模型原生搜索 grounding（ARK、Gemini、Grok、DeepSeek、智谱 Chat Search、
+并发调用模型原生搜索 grounding（ARK、Gemini、Grok、DeepSeek、
 Codex Alpha（实验性）以及通用 Responses/Messages 网关）、Agent 搜索 API（Exa、Parallel、Brave、
-Perplexity、Tavily、You.com、智谱 Web Search），并以 DuckDuckGo 作为传统搜索
+Tavily、You.com、Keenable、TinyFish），并以 DuckDuckGo 作为传统搜索
 兜底，最终返回统一格式的 JSON。
 
 ### 有没有不需要 API Key 的免费联网搜索 MCP？

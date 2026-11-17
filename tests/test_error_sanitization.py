@@ -17,8 +17,6 @@ PROVIDER_FILES = (
     "parallel.py",
     "tavily.py",
     "you.py",
-    "zhipu_chat_search.py",
-    "zhipu_common.py",
 )
 
 

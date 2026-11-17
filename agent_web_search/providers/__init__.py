@@ -13,7 +13,6 @@ from .responses import ResponsesProvider
 from .tavily import TavilyProvider
 from .tinyfish import TinyFishProvider
 from .you import YouProvider
-from .zhipu_chat_search import ZhipuChatSearchProvider
 
 __all__ = [
     "ArkProvider",
@@ -31,5 +30,4 @@ __all__ = [
     "TinyFishProvider",
     "KeenableProvider",
     "YouProvider",
-    "ZhipuChatSearchProvider",
 ]
