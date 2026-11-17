@@ -53,24 +53,24 @@ registered at startup. The current Provider IDs are:
   and `zhipu_chat_search` (`ZHIPU_CHAT_SEARCH_API_KEY`).
 - **Agent search:** `brave` (`BRAVE_SEARCH_API_KEY`), `exa` (`EXA_API_KEY`
   or its configured free MCP endpoint), `parallel` (`PARALLEL_API_KEY` or
-  its configured free MCP endpoint), `perplexity` (`PERPLEXITY_API_KEY`),
-  `tavily` (`TAVILY_API_KEY`), `you` (`YDC_API_KEY`), and
-  `zhipu_web_search` (`ZHIPU_WEB_SEARCH_API_KEY`).
+  its configured free MCP endpoint), `tavily` (`TAVILY_API_KEY`),
+  `you` (`YDC_API_KEY`), `keenable` (`KEENABLE_API_KEY`), and
+  `tinyfish` (`TINYFISH_API_KEY` or `MCP_TINYFISH_API_KEY`).
 
 Provider-specific model and endpoint overrides, HTTP settings, and the complete
-placeholder environment template are in `.env.example`. For the two Zhipu
-surfaces, configure them independently, for example:
+placeholder environment template are in `.env.example`. The Zhipu surface is
+`zhipu_chat_search`, which asks a GLM model to search the web and synthesize an
+answer:
 
 ```bash
-AGENT_WEB_SEARCH_PROVIDERS=zhipu_web_search
-ZHIPU_WEB_SEARCH_API_KEY=<server-side-key>
-agent-web-search "智谱最近发布了哪些新的模型能力和开发工具？" --provider zhipu_web_search
+AGENT_WEB_SEARCH_PROVIDERS=zhipu_chat_search
+ZHIPU_CHAT_SEARCH_API_KEY=<server-side-key>
+agent-web-search "智谱最近发布了哪些新的模型能力和开发工具？" --provider zhipu_chat_search
 ```
 
-Use `zhipu_chat_search` instead when a model-generated answer is wanted; it uses
-`ZHIPU_CHAT_SEARCH_API_KEY` and optionally
+It accepts `ZHIPU_CHAT_SEARCH_API_KEY` and optionally
 `AGENT_WEB_SEARCH_ZHIPU_CHAT_MODELS`. Never use a shared `ZHIPU_API_KEY`
-fallback or pass either credential as a CLI/MCP argument.
+fallback or pass the credential as a CLI/MCP argument.
 
 ## Run a search
 

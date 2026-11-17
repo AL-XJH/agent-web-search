@@ -16,12 +16,12 @@ def test_schema_only_exposes_grok_option_when_enabled():
 
 
 def test_new_search_providers_appear_in_dynamic_schema():
-    schema = build_tool_schema(["parallel", "perplexity", "you"])
+    schema = build_tool_schema(["parallel", "keenable", "you"])
     providers = schema["parameters"]["properties"]["providers"]["items"]["enum"]
 
-    assert providers == ["parallel", "perplexity", "you"]
+    assert providers == ["parallel", "keenable", "you"]
     assert "Parallel LLM-optimized web search" in schema["description"]
-    assert "Perplexity structured Search API" in schema["description"]
+    assert "Keenable web search API" in schema["description"]
     assert "You.com Search API" in schema["description"]
 
 

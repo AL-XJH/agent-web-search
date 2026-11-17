@@ -8,7 +8,6 @@ from agent_web_search.providers.exa import ExaProvider
 from agent_web_search.providers.gemini import GeminiProvider
 from agent_web_search.providers.grok import GrokProvider
 from agent_web_search.providers.parallel import ParallelProvider
-from agent_web_search.providers.perplexity import PerplexityProvider
 from agent_web_search.providers.tavily import TavilyProvider
 from agent_web_search.providers.you import YouProvider
 
@@ -22,7 +21,6 @@ from agent_web_search.providers.you import YouProvider
         (GeminiProvider, "GEMINI_API_KEY", {"models": ["model"]}),
         (GrokProvider, "XAI_API_KEY", {"models": ["model"]}),
         (ParallelProvider, "PARALLEL_API_KEY", {}),
-        (PerplexityProvider, "PERPLEXITY_API_KEY", {}),
         (TavilyProvider, "TAVILY_API_KEY", {}),
         (YouProvider, "YDC_API_KEY", {}),
     ],

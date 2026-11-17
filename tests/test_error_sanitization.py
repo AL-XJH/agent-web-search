@@ -15,12 +15,10 @@ PROVIDER_FILES = (
     "grok.py",
     "messages.py",
     "parallel.py",
-    "perplexity.py",
     "tavily.py",
     "you.py",
     "zhipu_chat_search.py",
     "zhipu_common.py",
-    "zhipu_web_search.py",
 )
 
 

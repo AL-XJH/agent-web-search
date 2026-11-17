@@ -15,13 +15,11 @@ from .providers import (
     KeenableProvider,
     MessagesProvider,
     ParallelProvider,
-    PerplexityProvider,
     ResponsesProvider,
     TavilyProvider,
     TinyFishProvider,
     YouProvider,
     ZhipuChatSearchProvider,
-    ZhipuWebSearchProvider,
 )
 from .providers.base import Provider
 
@@ -76,11 +74,6 @@ PROVIDER_SPECS = {
         "Parallel LLM-optimized web search",
         "PARALLEL_API_KEY",
     ),
-    "perplexity": ProviderSpec(
-        PerplexityProvider,
-        "Perplexity structured Search API",
-        "PERPLEXITY_API_KEY",
-    ),
     "responses": ProviderSpec(
         ResponsesProvider,
         "Generic Responses API web search",
@@ -105,11 +98,6 @@ PROVIDER_SPECS = {
         YouProvider,
         "You.com Search API",
         "YDC_API_KEY",
-    ),
-    "zhipu_web_search": ProviderSpec(
-        ZhipuWebSearchProvider,
-        "Zhipu standalone Web Search API",
-        "ZHIPU_WEB_SEARCH_API_KEY",
     ),
     "zhipu_chat_search": ProviderSpec(
         ZhipuChatSearchProvider,
