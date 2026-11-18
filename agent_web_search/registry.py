@@ -19,6 +19,7 @@ from .providers import (
     TavilyProvider,
     TinyFishProvider,
     YouProvider,
+    ZhihuProvider,
 )
 from .providers.base import Provider
 
@@ -97,6 +98,11 @@ PROVIDER_SPECS = {
         YouProvider,
         "You.com Search API",
         "YDC_API_KEY",
+    ),
+    "zhihu": ProviderSpec(
+        ZhihuProvider,
+        "Zhihu open-platform content search",
+        "ZHIHU_ACCESS_SECRET",
     ),
 }
 

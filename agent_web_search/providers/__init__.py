@@ -13,6 +13,7 @@ from .responses import ResponsesProvider
 from .tavily import TavilyProvider
 from .tinyfish import TinyFishProvider
 from .you import YouProvider
+from .zhihu import ZhihuProvider
 
 __all__ = [
     "ArkProvider",
@@ -30,4 +31,5 @@ __all__ = [
     "TinyFishProvider",
     "KeenableProvider",
     "YouProvider",
+    "ZhihuProvider",
 ]
