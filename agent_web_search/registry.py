@@ -10,6 +10,7 @@ from .providers import (
     DDGSProvider,
     DeepSeekProvider,
     ExaProvider,
+    FeedCoopProvider,
     GeminiProvider,
     GrokProvider,
     KeenableProvider,
@@ -54,6 +55,11 @@ PROVIDER_SPECS = {
         "DEEPSEEK_API_KEY",
     ),
     "exa": ProviderSpec(ExaProvider, "Exa web search", "EXA_API_KEY"),
+    "feedcoop": ProviderSpec(
+        FeedCoopProvider,
+        "Volcengine FeedCoop global search",
+        "FEEDCOOP_API_KEY",
+    ),
     "gemini": ProviderSpec(
         GeminiProvider,
         "Gemini Google Search grounding",

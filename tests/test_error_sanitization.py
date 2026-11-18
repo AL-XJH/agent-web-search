@@ -17,6 +17,7 @@ PROVIDER_FILES = (
     "parallel.py",
     "tavily.py",
     "you.py",
+    "feedcoop.py",
     "zhihu.py",
 )
 

@@ -54,9 +54,10 @@ registered at startup. The current Provider IDs are:
   or its configured free MCP endpoint), `parallel` (`PARALLEL_API_KEY` or
   its configured free MCP endpoint), `tavily` (`TAVILY_API_KEY`),
   `you` (`YDC_API_KEY`), `keenable` (`KEENABLE_API_KEY`),
-  `tinyfish` (`TINYFISH_API_KEY` or `MCP_TINYFISH_API_KEY`), and
-  `zhihu` (`ZHIHU_ACCESS_SECRET`, sent as a Bearer token with a
-  seconds-resolution `X-Request-Timestamp`).
+  `tinyfish` (`TINYFISH_API_KEY` or `MCP_TINYFISH_API_KEY`), `zhihu`
+  (`ZHIHU_ACCESS_SECRET`, sent as a Bearer token with a
+  seconds-resolution `X-Request-Timestamp`), and `feedcoop`
+  (`FEEDCOOP_API_KEY`, Volcengine's `global_search`).
 
 Provider-specific model and endpoint overrides, HTTP settings, and the complete
 placeholder environment template are in `.env.example`.
