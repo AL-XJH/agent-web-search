@@ -38,11 +38,15 @@ class FeedCoopProvider(Provider):
 
     @staticmethod
     def _text_of(document: dict) -> str:
-        parts = [
-            (block.get("Text") or "").strip()
-            for block in document.get("Snippet") or []
-            if isinstance(block, dict) and block.get("Type") == "text"
-        ]
+        parts = []
+        for block in document.get("Snippet") or []:
+            if not isinstance(block, dict) or block.get("Type") != "text":
+                continue
+            # Snippets keep the source document's markdown headings; the
+            # leading hashes are noise inside a one-line description.
+            text = (block.get("Text") or "").lstrip("#").strip()
+            if text:
+                parts.append(text)
         collapsed = " ".join(" ".join(parts).split())
         if len(collapsed) <= EXCERPT_CHARS:
             return collapsed
@@ -58,14 +62,23 @@ class FeedCoopProvider(Provider):
                 provider="feedcoop", error=f"feedcoop API code {code}"
             )
         results = []
+        seen_titles: set[str] = set()
         for document in result.get("Documents") or []:
             if not isinstance(document, dict) or not document.get("Url"):
                 continue
+            title = (document.get("Title") or "").strip()
+            # The same page often comes back twice under locale-specific URLs
+            # (e.g. /en-au/pages/x and /pages/x); keep the first.
+            key = title.casefold()
+            if key and key in seen_titles:
+                continue
+            if key:
+                seen_titles.add(key)
             info = document.get("DocumentInfo") or {}
             host = document.get("HostInfo") or {}
             results.append(
                 SearchResult(
-                    title=(document.get("Title") or "").strip(),
+                    title=title,
                     url=(document.get("Url") or "").strip(),
                     description=cls._text_of(document),
                     provider="feedcoop",

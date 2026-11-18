@@ -60,6 +60,29 @@ def test_parse_applies_limit():
     assert len(FeedCoopProvider.parse(SAMPLE, limit=1).results) == 1
 
 
+def test_duplicate_titles_collapse_and_markdown_headings_are_stripped():
+    response = FeedCoopProvider.parse(
+        {
+            "Result": {
+                "Documents": [
+                    {
+                        "Url": "https://site/en-au/pages/x",
+                        "Title": "Rave Culture 101",
+                        "Snippet": [{"Type": "text", "Text": "## What Is Rave Culture?\n\nPLUR."}],
+                    },
+                    {
+                        "Url": "https://site/pages/x",
+                        "Title": "rave culture 101",
+                        "Snippet": [{"Type": "text", "Text": "duplicate"}],
+                    },
+                ]
+            }
+        }
+    )
+    assert [row.url for row in response.results] == ["https://site/en-au/pages/x"]
+    assert response.results[0].description == "What Is Rave Culture? PLUR."
+
+
 def test_error_code_is_stable_and_hides_upstream_message():
     response = FeedCoopProvider.parse(
         {"Result": {"ErrorCode": 100013, "ErrorMsg": "invalid api key"}}
